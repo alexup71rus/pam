@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "name": "P&M",
+  "description": "Измерительный инструмент (powered by Intensa)",
+  "version": "1.0.0",
+  "icons": {"128": "icon_128.png"},
+  "browser_action": {
+    "default_icon": "icon_128.png",
+    "default_title": "P&M помощь",
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [ "*://*/*" ],
+      "all_frames": false,
+      "js": [ "./js/app.js" ],
+      "css": [ "./css/app.min.css" ],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "web_accessible_resources": [
+    "*"
+  ],
+  "permissions": [
+    "activeTab",
+    "webNavigation",
+    "debugger",
+    "tabs",
+    "alarms",
+    "clipboardWrite",
+    "notifications",
+    "background",
+    "storage",
+    "cookies",
+    "<all_urls>"
+  ]
+}

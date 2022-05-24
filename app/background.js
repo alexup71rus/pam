@@ -12,6 +12,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
             chrome.tabs.sendMessage(tabs[0].id, {"message": "click"});
         } else if (active === 'dimensions') {
             chrome.tabs.captureVisibleTab({ format: "png" }, data => {
+                console.log(data)
                 chrome.tabs.sendMessage(tabs[0].id, {action: 'takeScreenshot', screenPng: data});
             });
         } else if (active === 'rectangle') {

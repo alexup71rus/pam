@@ -97,7 +97,7 @@ export default class Dimension {
         this.parse(this.x, this.y, 'right');
     }
 
-    parse(x, y, type, i = 0, maxStep = 1000) {
+    parse(x, y, type, i = 0, maxStep = 5000) {
         switch (type) {
             case 'top':
                 y = y-1;

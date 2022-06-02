@@ -31,13 +31,13 @@ const actions = {
 }
 
 // receiveWorkerMessage
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        if (request.action && typeof actions[ request.action ] === 'function') {
-            actions[ request.action ](request, sender, sendResponse);
-        }
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.action && typeof actions[ request.action ] === 'function') {
+        actions[ request.action ](request, sender, sendResponse);
     }
-);
+
+    return true;
+});
 
 window.addEventListener('keydown', (ev) => {
     setKeys.push(ev.code);

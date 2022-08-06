@@ -9,15 +9,27 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
 
         if (message.popupOpen) {
             console.log('open');
-            chrome.tabs.sendMessage(tabs[0].id, {"message": "click"});
+            console.log(chrome, tabs[0].id);
+            // chrome.tabs.sendMessage(tabs[0].id, {"message": "click"});
+
+            return true;
         } else if (active === 'dimensions') {
             chrome.tabs.captureVisibleTab({ format: "png" }, data => {
                 chrome.tabs.sendMessage(tabs[0].id, {action: 'takeScreenshot', screenPng: data});
+                return true;
             });
+
+            return true;
         } else if (active === 'rectangle') {
             // chrome.tabs.sendMessage(tabs[0].id, {action: 'stop'});
+
+            return true;
         }
+
+        return true;
     });
+
+    return true;
 });
 
 

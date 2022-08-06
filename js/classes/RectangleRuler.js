@@ -78,8 +78,8 @@ export default class RectangleRuler {
                     this.rect = {
                         startLeft: this.rectangleNode.getBoundingClientRect().left,
                         startTop: this.rectangleNode.getBoundingClientRect().top,
-                        shiftX: ev.clientX - this.rectangleNode.getBoundingClientRect().left,
-                        shiftY: ev.clientY - this.rectangleNode.getBoundingClientRect().top,
+                        shiftX: window.scrollX + (ev.clientX - this.rectangleNode.getBoundingClientRect().left),
+                        shiftY: window.scrollY + (ev.clientY - this.rectangleNode.getBoundingClientRect().top),
                         startX: ev.clientX,
                         startY: ev.clientY,
                         shiftWidth: this.rectangleNode.getBoundingClientRect().width,
@@ -90,8 +90,8 @@ export default class RectangleRuler {
                     this.rect = {
                         startLeft: this.rectangleNode.getBoundingClientRect().left,
                         startTop: this.rectangleNode.getBoundingClientRect().top,
-                        shiftX: ev.clientX - this.rectangleNode.getBoundingClientRect().left,
-                        shiftY: ev.clientY - this.rectangleNode.getBoundingClientRect().top,
+                        shiftX: window.scrollX + (ev.clientX - this.rectangleNode.getBoundingClientRect().left),
+                        shiftY: window.scrollY + (ev.clientY - this.rectangleNode.getBoundingClientRect().top),
                         startX: ev.clientX,
                         startY: ev.clientY,
                         shiftWidth: this.rectangleNode.getBoundingClientRect().width,
@@ -179,6 +179,7 @@ export default class RectangleRuler {
                 this.rectangleNode.style.top = +this.rectangleNode.style.top
                     .replace('px', '') - 1 + 'px';
                 this.showPos();
+                this.updateTooltip(this.rectangleNode, this.tooltipSizeNode, this.tooltipPosNode);
                 this.debounce(this.hidePos.bind(this), 500);
             } else if (ev.key === 'ArrowDown') {
                 ev.preventDefault();
@@ -186,6 +187,7 @@ export default class RectangleRuler {
                 this.rectangleNode.style.top = +this.rectangleNode.style.top
                     .replace('px', '') + 1 + 'px';
                 this.showPos();
+                this.updateTooltip(this.rectangleNode, this.tooltipSizeNode, this.tooltipPosNode);
                 this.debounce(this.hidePos.bind(this), 500);
             } else if (ev.key === 'ArrowLeft') {
                 ev.preventDefault();
@@ -193,6 +195,7 @@ export default class RectangleRuler {
                 this.rectangleNode.style.left = +this.rectangleNode.style.left
                     .replace('px', '') - 1 + 'px';
                 this.showPos();
+                this.updateTooltip(this.rectangleNode, this.tooltipSizeNode, this.tooltipPosNode);
                 this.debounce(this.hidePos.bind(this), 500);
             } else if (ev.key === 'ArrowRight') {
                 ev.preventDefault();
@@ -200,6 +203,7 @@ export default class RectangleRuler {
                 this.rectangleNode.style.left = +this.rectangleNode.style.left
                     .replace('px', '') + 1 + 'px';
                 this.showPos();
+                this.updateTooltip(this.rectangleNode, this.tooltipSizeNode, this.tooltipPosNode);
                 this.debounce(this.hidePos.bind(this), 500);
             }
         }

@@ -1,239 +1,235 @@
-*, ::before, ::after {
-}
-
-.js-noCursor {
-  cursor: none;
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 99999999;
-}
-
-// dimension
-
-.js-dimension {
-  position: fixed;
-  width: 0;
-  height: 0;
-  z-index: 99999999;
-  pointer-events: none;
-}
-
-.js-dimension.on + .dimension__nocursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  cursor: none;
-  z-index: 99999999;
-}
-
-.js-dimension__tooltip {
-  position: absolute;
-  left: 5px;
-  bottom: 4px;
-  width: auto;
-  color: white;
-  text-align: center;
-  white-space: nowrap;
-  font-size: 12px;
-  line-height: 20px;
-  font-family: sans-serif;
-  padding: 0px 5px;
-  border-radius: 3px;
-  background: rgba(0, 30, 51, 0.7);
-}
-
-.js-dimension.on .js-dimension__axis.x {
-  height: 1px;
-  background: #707aff;
-}
-
-.js-dimension.on .js-dimension__axis.y {
-  width: 1px;
-  background: #707aff;
-}
-
-
-// rectangle-ruler
-
-.rectangle-close {
-  position: absolute;
-  padding: 5px;
-  top: -11px;
-  right: -11px;
-  width: 22px;
-  height: 22px;
-  background-color: #fff;
-  box-shadow: 1px 2px 5px rgba(0, 30, 51, 0.7);
-  background-image: url("data:image/svg+xml,%3Csvg width='24px' height='24px' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='close'%3E%3Crect width='24' height='24' transform='rotate(180 12 12)' opacity='0'/%3E%3Cpath d='M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  background-position: -1px -1px;
-  border-radius: 50%;
-  cursor: default;
-  z-index: 1;
-  transition: .2s;
-  opacity: 0;
-
-  &:hover {
-    opacity: 1;
+html {
+  *, ::before, ::after {
   }
 
-  &:active {
-    transform: scale(.9);
+  .js-noCursor {
+    cursor: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999999;
   }
+
+  // dimension
+
+  .js-dimension {
+    position: fixed;
+    width: 0;
+    height: 0;
+    z-index: 99999999;
+    pointer-events: none;
+  }
+
+  .js-dimension.on + .dimension__nocursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: none;
+    z-index: 99999999;
+  }
+
+  .js-dimension__tooltip {
+    position: absolute;
+    left: 5px;
+    bottom: 4px;
+    width: auto;
+    color: white;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 12px;
+    line-height: 20px;
+    font-family: sans-serif;
+    padding: 0px 5px;
+    border-radius: 3px;
+    background: rgba(0, 30, 51, 0.7);
+  }
+
+  .js-dimension.on .js-dimension__axis.x {
+    height: 1px;
+    background: #707aff;
+  }
+
+  .js-dimension.on .js-dimension__axis.y {
+    width: 1px;
+    background: #707aff;
+  }
+
+
+  // rectangle-ruler
+
+  .rectangle-close {
+    position: absolute !important;
+    padding: 5px !important;
+    top: -11px !important;
+    right: -11px !important;
+    width: 22px !important;
+    height: 22px !important;
+    background-color: #fff !important;
+    box-shadow: 1px 2px 5px rgba(0, 30, 51, 0.7) !important;
+    background-image: url("data:image/svg+xml,%3Csvg width='24px' height='24px' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='close'%3E%3Crect width='24' height='24' transform='rotate(180 12 12)' opacity='0'/%3E%3Cpath d='M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+    background-position: -1px -1px !important;
+    border-radius: 50% !important;
+    cursor: default !important;
+    z-index: 1 !important;
+    transition: .2s !important;
+    opacity: 0 !important;
+    box-sizing: border-box !important;
+
+    &:hover {
+      opacity: 1 !important;
+    }
+
+    &:active {
+      transform: scale(.9) !important;
+    }
+  }
+
+  .rectangle-ruler {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    z-index: 999999 !important;
+  }
+
+  .rectangle-ruler__no-cursor {
+    position: absolute !important;
+    top: -50px !important;
+    left: -50px !important;
+    width: 100px !important;
+    height: 100px !important;
+    cursor: default !important;
+  }
+
+  .rectangle-ruler__rectangle {
+    position: absolute;
+    top: 50px;
+    left: 100px;
+    width: 500px;
+    height: 300px;
+    //background-color: #707aff66;
+    background-color: rgba(112, 122, 255, 0.2);
+    //filter: drop-shadow(0px 0px 10px rgba(112, 122, 255, 0.4));
+    //background-color: rgba(112, 122, 255, 0.1);
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 30, 51, 0.7);
+  }
+
+  .rectangle-ruler__tooltip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .rectangle-ruler__tooltip > div {
+    position: absolute;
+    //left: 5px;
+    //bottom: 4px;
+    width: auto;
+    color: white;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 12px;
+    line-height: 20px;
+    font-family: sans-serif;
+    padding: 0px 5px;
+    //border-radius: 3px;
+    background: rgba(0, 30, 51, 0.7);
+  }
+
+  .tooltip__top {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    border-radius: 3px 3px 0 0;
+  }
+
+  .tooltip__bottom {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    border-radius: 0 0 3px 3px;
+    transition: .2s;
+  }
+
+  .rectangle-tooltip__size.hide {
+    opacity: 0;
+  }
+
+  .rectangle-tooltip__pos.hide {
+    opacity: 0;
+  }
+
+  .tooltip__left {
+    top: 50%;
+    left: 0;
+    transform: translate(-100%, -50%);
+    border-radius: 3px 0 0 3px;
+  }
+
+  .tooltip__right {
+    top: 50%;
+    right: 0;
+    transform: translate(100%, -50%);
+    border-radius: 0px 3px 3px 0;
+  }
+
+  // ui-resizable
+  .ui-resizable {
+    cursor: move;
+    user-select: none;
+  }
+
+  .ui-resizable-n {
+    position: absolute;
+    top: -3px;
+    left: 5px;
+    width: calc(100% - 10px);
+    height: 8px;
+    cursor: n-resize;
+  }
+
+  .ui-resizable-w {
+    position: absolute;
+    top: 5px;
+    left: -3px;
+    width: 8px;
+    height: calc(100% - 10px);
+    cursor: w-resize;
+  }
+
+  .ui-resizable-s {
+    position: absolute;
+    bottom: -3px;
+    left: 5px;
+    width: calc(100% - 10px);
+    height: 8px;
+    cursor: s-resize;
+  }
+
+  .ui-resizable-e {
+    position: absolute;
+    top: 5px;
+    right: -3px;
+    width: 8px;
+    height: calc(100% - 10px);
+    cursor: e-resize;
+  }
+
+  .ui-resizable-se {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    width: 8px;
+    height: 8px;
+    cursor: se-resize;
+  }
+
 }
-
-.rectangle-ruler {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  z-index: 999999;
-}
-
-.rectangle-ruler__no-cursor {
-  position: absolute;
-  top: -50px;
-  left: -50px;
-  width: 100px;
-  height: 100px;
-  cursor: default;
-}
-
-.rectangle-ruler__rectangle {
-  position: absolute;
-  top: 50px;
-  left: 100px;
-  width: 500px;
-  height: 300px;
-  //background-color: #707aff66;
-  background-color: rgba(112, 122, 255, 0.2);
-  //filter: drop-shadow(0px 0px 10px rgba(112, 122, 255, 0.4));
-  //background-color: rgba(112, 122, 255, 0.1);
-  box-sizing: border-box;
-  border: 1px solid rgba(0, 30, 51, 0.7);
-}
-
-.rectangle-ruler__tooltip {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.rectangle-ruler__tooltip > div {
-  position: absolute;
-  //left: 5px;
-  //bottom: 4px;
-  width: auto;
-  color: white;
-  text-align: center;
-  white-space: nowrap;
-  font-size: 12px;
-  line-height: 20px;
-  font-family: sans-serif;
-  padding: 0px 5px;
-  //border-radius: 3px;
-  background: rgba(0, 30, 51, 0.7);
-}
-
-.tooltip__top {
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -100%);
-  border-radius: 3px 3px 0 0;
-}
-
-.tooltip__bottom {
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 100%);
-  border-radius: 0 0 3px 3px;
-  transition: .2s;
-}
-
-.rectangle-tooltip__size.hide {
-  opacity: 0;
-}
-
-.rectangle-tooltip__pos.hide {
-  opacity: 0;
-}
-
-.tooltip__left {
-  top: 50%;
-  left: 0;
-  transform: translate(-100%, -50%);
-  border-radius: 3px 0 0 3px;
-}
-
-.tooltip__right {
-  top: 50%;
-  right: 0;
-  transform: translate(100%, -50%);
-  border-radius: 0px 3px 3px 0;
-}
-
-// ui-resizable
-.ui-resizable {
-  cursor: move;
-  user-select: none;
-}
-
-.ui-resizable-n {
-  position: absolute;
-  top: -3px;
-  left: 5px;
-  width: calc(100% - 10px);
-  height: 8px;
-  cursor: n-resize;
-}
-
-.ui-resizable-w {
-  position: absolute;
-  top: 5px;
-  left: -3px;
-  width: 8px;
-  height: calc(100% - 10px);
-  cursor: w-resize;
-}
-
-.ui-resizable-s {
-  position: absolute;
-  bottom: -3px;
-  left: 5px;
-  width: calc(100% - 10px);
-  height: 8px;
-  cursor: s-resize;
-}
-
-.ui-resizable-e {
-  position: absolute;
-  top: 5px;
-  right: -3px;
-  width: 8px;
-  height: calc(100% - 10px);
-  cursor: e-resize;
-}
-
-.ui-resizable-se {
-  position: absolute;
-  bottom: -3px;
-  right: -3px;
-  width: 8px;
-  height: 8px;
-  cursor: se-resize;
-}
-
-
-
-
-
-
-
-

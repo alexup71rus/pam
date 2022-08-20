@@ -48,6 +48,16 @@ html {
     background: rgba(0, 30, 51, 0.7);
   }
 
+  .js-dimension__tooltip.translateX {
+    left: auto;
+    right: 4px;
+  }
+
+  .js-dimension__tooltip.translateY {
+    bottom: auto;
+    top: 4px;
+  }
+
   .js-dimension.on .js-dimension__axis.x {
     height: 1px;
     background: #707aff;
@@ -60,6 +70,16 @@ html {
 
 
   // rectangle-ruler
+
+  .rectangle-ruler__nav {
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+
+    &:hover div {
+      opacity: 1 !important;
+    }
+  }
 
   .rectangle-close {
     position: absolute !important;
@@ -88,8 +108,42 @@ html {
     }
   }
 
+  .rectangle-pin {
+    position: absolute !important;
+    padding: 5px !important;
+    top: -11px !important;
+    right: 21px !important;
+    width: 22px !important;
+    height: 22px !important;
+    background-color: #fff !important;
+    box-shadow: 1px 2px 5px rgba(0, 30, 51, 0.7) !important;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M27.3049 0.146988L39.8529 12.6968C40.0492 12.8925 40.0492 13.2128 39.8529 13.4091L35.5794 17.682C35.3834 17.8787 35.0631 17.8787 34.8675 17.682L33.6526 16.4677L28.0201 22.0998C29.2838 26.8598 28.051 32.1455 24.3189 35.8773C24.2323 35.9646 24.1447 36.0496 24.0559 36.1335C23.729 36.4444 23.7814 36.4425 23.4657 36.1267L15.4939 28.1542L0 40.0002L11.8487 24.5089L3.86527 16.5253C3.5469 16.2063 3.5736 16.2564 3.88675 15.9273C3.96488 15.8456 4.04463 15.7635 4.12568 15.6822C7.85716 11.9503 13.1433 10.7165 17.9025 11.9806L23.5344 6.34849L22.3192 5.13352C22.1236 4.93786 22.1236 4.61751 22.3192 4.4212L26.5923 0.146988C26.789 -0.0486705 27.1093 -0.0486705 27.3049 0.146988Z' fill='black'/%3E%3C/svg%3E%0A") !important;
+    background-position: 50% 50% !important;
+    background-size: 60% !important;
+    background-repeat: no-repeat !important;
+    border-radius: 50% !important;
+    cursor: default !important;
+    z-index: 1 !important;
+    transition: .2s !important;
+    opacity: 0 !important;
+    box-sizing: border-box !important;
+
+    &:hover {
+      opacity: 1 !important;
+    }
+
+    &:active {
+      transform: scale(.9) !important;
+    }
+  }
+
+  .rectangle-pin.active {
+    background-color: #ebebeb !important;
+    transform: scale(.9) !important;
+  }
+
   .rectangle-ruler {
-    position: fixed !important;
+    position: absolute !important;
     top: 0 !important;
     left: 0 !important;
     width: 0 !important;
@@ -107,7 +161,7 @@ html {
   }
 
   .rectangle-ruler__rectangle {
-    position: absolute;
+    position: fixed !important;
     top: 50px;
     left: 100px;
     width: 500px;
@@ -118,6 +172,10 @@ html {
     //background-color: rgba(112, 122, 255, 0.1);
     box-sizing: border-box;
     border: 1px solid rgba(0, 30, 51, 0.7);
+  }
+
+  .rectangle-ruler__rectangle.rectangle-ruler__rectangle_fix {
+    position: absolute !important;
   }
 
   .rectangle-ruler__tooltip {
@@ -152,19 +210,21 @@ html {
   }
 
   .tooltip__bottom {
+    display: block !important;
     bottom: 0;
     left: 50%;
     transform: translate(-50%, 100%);
     border-radius: 0 0 3px 3px;
-    transition: .2s;
+    opacity: 1 !important;
+    transition: .2s !important;
   }
 
   .rectangle-tooltip__size.hide {
-    opacity: 0;
+    opacity: 0 !important;
   }
 
   .rectangle-tooltip__pos.hide {
-    opacity: 0;
+    opacity: 0 !important;
   }
 
   .tooltip__left {
@@ -231,5 +291,38 @@ html {
     height: 8px;
     cursor: se-resize;
   }
+}
 
+// rails
+
+.rail-x {
+  position: absolute;
+  height: 7px;
+  padding: 3px 0;
+  background: rgba(255, 255, 255, 0);
+  transform: translateY(-50%);
+
+  &::before {
+    content: '';
+    display: block;
+    background: #ff70f8;
+    width: 100%;
+    height: 1px;
+  }
+}
+
+.rail-y {
+  position: absolute;
+  width: 7px;
+  padding: 0 3px;
+  background: rgba(255, 255, 255, 0);
+  transform: translateX(-50%);
+
+  &::before {
+    content: '';
+    display: block;
+    background: #ff70f8;
+    width: 1px;
+    height: 100%;
+  }
 }

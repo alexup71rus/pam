@@ -90,11 +90,14 @@ export default class Dimension {
     }
 
     measureArea() {
+        let x = this.x;
+        let y = this.y;
+
         this.midColor = this.getColorCursorPoint();
-        this.parse(this.x, this.y, 'top');
-        this.parse(this.x, this.y, 'bottom');
-        this.parse(this.x, this.y, 'left');
-        this.parse(this.x, this.y, 'right');
+        this.parse(x, y, 'top');
+        this.parse(x, y, 'bottom');
+        this.parse(x, y, 'left');
+        this.parse(x, y, 'right');
     }
 
     parse(x, y, type, i = 0, maxStep = 5000) {
@@ -140,6 +143,21 @@ export default class Dimension {
     }
 
     draw(clientX, clientY) {
+        let x = clientX;
+        let y = clientY;
+
+        if (clientX + 100 > window.innerWidth) {
+            this.nodes.tooltip.classList.add('translateX');
+        } else {
+            this.nodes.tooltip.classList.remove('translateX');
+        }
+
+        if (clientY - 100 < 0) {
+            this.nodes.tooltip.classList.add('translateY')
+        } else {
+            this.nodes.tooltip.classList.remove('translateY');
+        }
+
         this.top = this.top+1;
         this.left = this.left+1;
         this.nodes.point.classList.add('on');
@@ -157,6 +175,31 @@ export default class Dimension {
     }
 
     drawLines() { //
+    }
+
+    fixPositionRails() { //
+        const rectX = this.nodes.x.getBoundingClientRect();
+        const rectY = this.nodes.y.getBoundingClientRect();
+        const rail = document.createElement('div');
+        rail.classList.add('js-rail');
+
+        console.log(this.nodes.y, this.nodes.y.style.width, this.nodes.y.style.height);
+
+        if (parseInt(this.nodes.x.style.width) < parseInt(this.nodes.y.style.height)) {
+            rail.classList.add('rail-x');
+            rail.style.width = this.nodes.x.style.width;
+            rail.style.top = window.scrollY + rectX.top + 'px';
+            rail.style.left = window.scrollX + rectX.left + 'px';
+            rail.title = this.nodes.x.style.width;
+        } else {
+            rail.classList.add('rail-y');
+            rail.style.height = this.nodes.y.style.height;
+            rail.style.top = window.scrollY + rectY.top + 'px';
+            rail.style.left = window.scrollX + rectY.left + 'px';
+            rail.title = this.nodes.y.style.height;
+        }
+
+        document.body.appendChild(rail);
     }
 
     parseScreenshot(png) {

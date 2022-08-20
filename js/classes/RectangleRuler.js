@@ -14,7 +14,10 @@ export default class RectangleRuler {
         const html = `
         <div class="js-rectangle-ruler rectangle-ruler" style="">
             <div class="js-rectangle rectangle-ruler__rectangle ui-resizable" data-action="move">
-                <div class="js-rectangle-close rectangle-close" data-action="close"></div>
+                <div class="rectangle-ruler__nav">
+                    <div class="js-rectangle-close rectangle-close" data-action="close"></div>
+                    <div class="js-rectangle-pin rectangle-pin" data-action="pin"></div>
+                </div>
                 <div class="rectangle-ruler__tooltip" data-action="move">
                     <div class="js-rectangle-tooltip-size rectangle-tooltip__size tooltip__bottom" data-action="move">500x300</div>
                     <div class="js-rectangle-tooltip-pos rectangle-tooltip__pos tooltip__bottom hide" data-action="move">500x300</div>
@@ -76,8 +79,12 @@ export default class RectangleRuler {
                     const resize = ev.target.dataset?.resize;
 
                     this.rect = {
-                        startLeft: this.rectangleNode.getBoundingClientRect().left,
-                        startTop: this.rectangleNode.getBoundingClientRect().top,
+                        startLeft: this.rectangleNode.classList.contains('rectangle-ruler__rectangle_fix')
+                            ? window.scrollX + this.rectangleNode.getBoundingClientRect().left
+                            : this.rectangleNode.getBoundingClientRect().left,
+                        startTop: this.rectangleNode.classList.contains('rectangle-ruler__rectangle_fix')
+                            ? window.scrollY + this.rectangleNode.getBoundingClientRect().top
+                            : this.rectangleNode.getBoundingClientRect().top,
                         shiftX: window.scrollX + (ev.clientX - this.rectangleNode.getBoundingClientRect().left),
                         shiftY: window.scrollY + (ev.clientY - this.rectangleNode.getBoundingClientRect().top),
                         startX: ev.clientX,
@@ -90,8 +97,12 @@ export default class RectangleRuler {
                     this.rect = {
                         startLeft: this.rectangleNode.getBoundingClientRect().left,
                         startTop: this.rectangleNode.getBoundingClientRect().top,
-                        shiftX: window.scrollX + (ev.clientX - this.rectangleNode.getBoundingClientRect().left),
-                        shiftY: window.scrollY + (ev.clientY - this.rectangleNode.getBoundingClientRect().top),
+                        shiftX: this.rectangleNode.classList.contains('rectangle-ruler__rectangle_fix')
+                            ? (ev.clientX - this.rectangleNode.getBoundingClientRect().left)
+                            : window.scrollX + (ev.clientX - this.rectangleNode.getBoundingClientRect().left),
+                        shiftY: this.rectangleNode.classList.contains('rectangle-ruler__rectangle_fix')
+                            ? (ev.clientY - this.rectangleNode.getBoundingClientRect().top)
+                            : window.scrollY + (ev.clientY - this.rectangleNode.getBoundingClientRect().top),
                         startX: ev.clientX,
                         startY: ev.clientY,
                         shiftWidth: this.rectangleNode.getBoundingClientRect().width,
@@ -117,6 +128,30 @@ export default class RectangleRuler {
             if (this.action === 'close') {
                 if (this.rulerNode) {
                     this.rulerNode.remove();
+                }
+            } else if (this.action === 'pin') {
+                const btn = this.rectangleNode.querySelector('.js-rectangle-pin');
+
+                if (btn) {
+                    if (btn.classList.contains('active')) {
+                        const y = window.scrollY + (ev.clientY - this.rectangleNode.getBoundingClientRect().top);
+                        const x = window.scrollX + (ev.clientX - this.rectangleNode.getBoundingClientRect().left);
+                        this.rectangleNode.style.top = (ev.pageY - y) + 'px';
+                        this.rectangleNode.style.left = (ev.pageX - x) + 'px';
+
+                        btn.classList.remove('active');
+                        this.rectangleNode.classList.remove('rectangle-ruler__rectangle_fix');
+                    } else {
+                        const y = (ev.clientY - this.rectangleNode.getBoundingClientRect().top);
+                        const x = (ev.clientX - this.rectangleNode.getBoundingClientRect().left);
+                        this.rectangleNode.style.top = (ev.pageY - y) + 'px';
+                        this.rectangleNode.style.left = (ev.pageX - x) + 'px';
+
+                        btn.classList.add('active');
+                        this.rectangleNode.classList.add('rectangle-ruler__rectangle_fix');
+                    }
+                } else {
+                    debugger;
                 }
             } else {
                 this.updateTooltip(this.rectangleNode, this.tooltipSizeNode, this.tooltipPosNode);
@@ -162,7 +197,10 @@ export default class RectangleRuler {
                 this.rectangleNode.style.left = newLeft + 'px';
                 this.rectangleNode.style.width = (this.rect.shiftWidth + (this.rect.startLeft - newLeft)) + 'px';
             } else if (this.resizeSide === 'n') {
-                const newTop = (ev.pageY - this.rect.shiftY);
+                const newTop = (this.rectangleNode.classList.contains('rectangle-ruler__rectangle_fix'))
+                    ? window.scrollY + (ev.pageY - this.rect.shiftY)
+                    : (ev.pageY - this.rect.shiftY);
+                console.log(window.scrollY, newTop)
                 this.rectangleNode.style.top = newTop + 'px';
                 this.rectangleNode.style.height = (this.rect.shiftHeight + (this.rect.startTop - newTop)) + 'px';
             }
@@ -213,7 +251,12 @@ export default class RectangleRuler {
         const rect = rectangle.getBoundingClientRect();
 
         tooltipSize.innerHTML = rect.width + 'x' + rect.height;
-        tooltipPos.innerHTML = rect.left + 'x' + rect.top;
+
+        if (this.rectangleNode.classList.contains('rectangle-ruler__rectangle_fix')) {
+            tooltipPos.innerHTML = rectangle.offsetLeft + 'x' + rectangle.offsetTop;
+        } else {
+            tooltipPos.innerHTML = rect.left + 'x' + rect.top;
+        }
     }
 
     debounce(func, delay) {

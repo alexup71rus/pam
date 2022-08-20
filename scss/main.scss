@@ -301,6 +301,8 @@ html {
   padding: 3px 0 !important;
   background: rgba(255, 255, 255, 0) !important;
   transform: translateY(-50%) !important;
+  box-sizing: border-box !important;
+  z-index: 99999;
 
   &::before {
     content: '';
@@ -308,7 +310,6 @@ html {
     background: #ff70f8 !important;
     width: 100% !important;
     height: 1px !important;
-    box-sizing: border-box !important;
   }
 }
 
@@ -319,6 +320,7 @@ html {
   background: rgba(255, 255, 255, 0) !important;
   transform: translateX(-50%) !important;
   box-sizing: border-box !important;
+  z-index: 99999;
 
   &::before {
     content: '';

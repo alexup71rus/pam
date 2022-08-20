@@ -308,6 +308,7 @@ html {
     background: #ff70f8 !important;
     width: 100% !important;
     height: 1px !important;
+    box-sizing: border-box !important;
   }
 }
 
@@ -317,6 +318,7 @@ html {
   padding: 0 3px !important;
   background: rgba(255, 255, 255, 0) !important;
   transform: translateX(-50%) !important;
+  box-sizing: border-box !important;
 
   &::before {
     content: '';

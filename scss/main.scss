@@ -296,33 +296,33 @@ html {
 // rails
 
 .rail-x {
-  position: absolute;
-  height: 7px;
-  padding: 3px 0;
-  background: rgba(255, 255, 255, 0);
-  transform: translateY(-50%);
+  position: absolute !important;
+  height: 7px !important;
+  padding: 3px 0 !important;
+  background: rgba(255, 255, 255, 0) !important;
+  transform: translateY(-50%) !important;
 
   &::before {
     content: '';
-    display: block;
-    background: #ff70f8;
-    width: 100%;
-    height: 1px;
+    display: block !important;
+    background: #ff70f8 !important;
+    width: 100% !important;
+    height: 1px !important;
   }
 }
 
 .rail-y {
-  position: absolute;
-  width: 7px;
-  padding: 0 3px;
-  background: rgba(255, 255, 255, 0);
-  transform: translateX(-50%);
+  position: absolute !important;
+  width: 7px !important;
+  padding: 0 3px !important;
+  background: rgba(255, 255, 255, 0) !important;
+  transform: translateX(-50%) !important;
 
   &::before {
     content: '';
-    display: block;
-    background: #ff70f8;
-    width: 1px;
-    height: 100%;
+    display: block !important;
+    background: #ff70f8 !important;
+    width: 1px !important;
+    height: 100% !important;
   }
 }

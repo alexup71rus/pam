@@ -6,21 +6,56 @@ export default class RectangleRuler {
         this.rectangleNode = false;
         this.tooltipSizeNode = false;
         this.tooltipPosNode = false;
+        this.mouseX = 0;
+        this.mouseY = 0;
 
         this.bind();
     }
 
-    create() {
+    create(isAutoSet) {
+        const rulers = document.querySelectorAll('.js-rectangle-ruler');
+        let top = 100;
+        let left = 100;
+        let width = 200;
+        let height = 100;
+
+        if (isAutoSet) {
+            const elemOverCursor = document.elementFromPoint(this.mouseX, this.mouseY);
+
+            if (elemOverCursor) {
+                top = window.scrollY + elemOverCursor.getBoundingClientRect().top;
+                left = window.scrollX + elemOverCursor.getBoundingClientRect().left;
+                width = elemOverCursor.getBoundingClientRect().width;
+                height = elemOverCursor.getBoundingClientRect().height;
+            }
+        } else if (rulers) {
+            top = 100 + (rulers.length * 10);
+            left = 100 + (rulers.length * 10);
+        }
+
+        top = Math.ceil(top);
+        left = Math.ceil(left);
+        width = Math.ceil(width);
+        height = Math.ceil(height);
+
+        const container = document.createElement('div');
+        container.classList.add('js-rectangle-ruler');
+        container.classList.add('rectangle-ruler');
+
         const html = `
-        <div class="js-rectangle-ruler rectangle-ruler" style="">
-            <div class="js-rectangle rectangle-ruler__rectangle ui-resizable" data-action="move">
+            <div class="js-rectangle rectangle-ruler__rectangle ui-resizable" data-action="move" style="${
+                'top:' + top + 'px;'
+                + 'left:' + left + 'px;'
+                + 'width:' + width + 'px;'
+                + 'height:' + height + 'px;'
+            }">
                 <div class="rectangle-ruler__nav">
                     <div class="js-rectangle-close rectangle-close" data-action="close"></div>
                     <div class="js-rectangle-pin rectangle-pin" data-action="pin"></div>
                 </div>
                 <div class="rectangle-ruler__tooltip" data-action="move">
-                    <div class="js-rectangle-tooltip-size rectangle-tooltip__size tooltip__bottom" data-action="move">500x300</div>
-                    <div class="js-rectangle-tooltip-pos rectangle-tooltip__pos tooltip__bottom hide" data-action="move">500x300</div>
+                    <div class="js-rectangle-tooltip-size rectangle-tooltip__size tooltip__bottom rectangle-tooltip_center" data-action="move">${width}x${height}</div>
+                    <div class="js-rectangle-tooltip-pos rectangle-tooltip__pos tooltip__bottom hide" data-action="move">${top}x${left}</div>
                 </div>
                 <div class="ui-resizable-n" data-action="resize" data-resize="n"></div>
                 <div class="ui-resizable-w" data-action="resize" data-resize="w"></div>
@@ -29,9 +64,19 @@ export default class RectangleRuler {
                 <div class="ui-resizable-se" data-action="resize" data-resize="se"></div>
             </div>
             <div class="rectangle-ruler__no-cursor"></div>
-        </div>
         `;
-        document.body.insertAdjacentHTML('beforeend', html);
+
+        container.insertAdjacentHTML('beforeend', html);
+        document.body.appendChild(container);
+
+        if (isAutoSet) {
+            const pin = container.querySelector('.js-rectangle-pin');
+
+            this.action = 'pin';
+            this.rulerNode = container;
+            this.rectangleNode = this.rulerNode.querySelector('.js-rectangle');
+            this.triggerMouseEvent(pin, 'mouseup');
+        }
     }
 
     getRuler(target, selector) {
@@ -63,6 +108,12 @@ export default class RectangleRuler {
         document.addEventListener('mouseup', this.mouseUp.bind(this))
         document.addEventListener('mousemove', this.mouseMove.bind(this))
         document.addEventListener('keydown', this.keyDown.bind(this))
+    }
+
+    triggerMouseEvent(node, eventType) {
+        let clickEvent = document.createEvent('MouseEvents');
+        clickEvent.initEvent(eventType, true, true);
+        node.dispatchEvent(clickEvent);
     }
 
     mouseDown(ev) {
@@ -177,6 +228,9 @@ export default class RectangleRuler {
     }
 
     mouseMove(ev) {
+        this.mouseX = ev.clientX;
+        this.mouseY = ev.clientY;
+
         if (this.action === 'move') {
             const rect = this.rectangleNode.getBoundingClientRect();
 
@@ -185,6 +239,15 @@ export default class RectangleRuler {
 
             this.updateTooltip(this.rectangleNode, this.tooltipSizeNode, this.tooltipPosNode);
         } else if (this.action === 'resize') {
+            if (
+                this.rectangleNode.getBoundingClientRect().width > 120
+                && this.rectangleNode.getBoundingClientRect().height > 50
+            ) {
+                this.tooltipSizeNode.classList.add('rectangle-tooltip_center');
+            } else {
+                this.tooltipSizeNode.classList.remove('rectangle-tooltip_center')
+            }
+
             if (this.resizeSide === 'se') {
                 this.rectangleNode.style.width = (this.rect.shiftWidth + ev.clientX - this.rect.startX) + 'px';
                 this.rectangleNode.style.height = (this.rect.shiftHeight + ev.clientY - this.rect.startY) + 'px';
@@ -194,13 +257,14 @@ export default class RectangleRuler {
                 this.rectangleNode.style.height = (this.rect.shiftHeight + ev.clientY - this.rect.startY) + 'px';
             } else if (this.resizeSide === 'w') {
                 const newLeft = (ev.pageX - this.rect.shiftX);
+
                 this.rectangleNode.style.left = newLeft + 'px';
                 this.rectangleNode.style.width = (this.rect.shiftWidth + (this.rect.startLeft - newLeft)) + 'px';
             } else if (this.resizeSide === 'n') {
                 const newTop = (this.rectangleNode.classList.contains('rectangle-ruler__rectangle_fix'))
                     ? window.scrollY + (ev.pageY - this.rect.shiftY)
                     : (ev.pageY - this.rect.shiftY);
-                console.log(window.scrollY, newTop)
+
                 this.rectangleNode.style.top = newTop + 'px';
                 this.rectangleNode.style.height = (this.rect.shiftHeight + (this.rect.startTop - newTop)) + 'px';
             }

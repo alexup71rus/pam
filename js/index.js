@@ -47,7 +47,7 @@ const quickKeys = {
     },
     'AltLeft + ShiftLeft + KeyX': function () {
         if (active === '') {
-            rectangleRuler.create();
+            rectangleRuler.create(true);
         }
 
         return false;

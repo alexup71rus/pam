@@ -205,6 +205,10 @@ export default class Dimension {
                 this.nodes.x.style.width = this.left + this.right + 'px';
             }
         } else {
+            if (noCursorDiv) {
+                noCursorDiv.classList.remove('dimension__nocursor_hide');
+            }
+
             this.top = this.top+1;
             this.left = this.left+1;
             this.nodes.point.classList.add('on');

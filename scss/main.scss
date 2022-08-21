@@ -231,6 +231,16 @@ html {
     opacity: 0 !important;
   }
 
+  .rectangle-tooltip_center {
+    bottom: 50%;
+    transform: translate(-50%, 50%);
+    border-radius: 3px;
+  }
+
+  .rectangle-tooltip_center + .rectangle-tooltip__pos.hide {
+    opacity: 1 !important;
+  }
+
   .tooltip__left {
     top: 50%;
     left: 0;

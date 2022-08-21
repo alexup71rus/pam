@@ -169,10 +169,10 @@ export default class Dimension {
                     noCursorDiv.classList.add('dimension__nocursor_hide');
                 }
 
-                const top = elemOverCursor.getBoundingClientRect().top;
-                const left = elemOverCursor.getBoundingClientRect().left;
-                const width = elemOverCursor.getBoundingClientRect().width;
-                const height = elemOverCursor.getBoundingClientRect().height;
+                const top = Math.ceil(elemOverCursor.getBoundingClientRect().top);
+                const left = Math.ceil(elemOverCursor.getBoundingClientRect().left);
+                const width = Math.ceil(elemOverCursor.getBoundingClientRect().width);
+                const height = Math.ceil(elemOverCursor.getBoundingClientRect().height);
 
                 this.top = this.top+1;
                 this.left = this.left+1;

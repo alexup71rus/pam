@@ -54,7 +54,12 @@ export default class RectangleRuler {
                     <div class="js-rectangle-pin rectangle-pin" data-action="pin"></div>
                 </div>
                 <div class="rectangle-ruler__tooltip" data-action="move">
-                    <div class="js-rectangle-tooltip-size rectangle-tooltip__size tooltip__bottom rectangle-tooltip_center" data-action="move">${width}x${height}</div>
+                    <div class="js-rectangle-tooltip-size rectangle-tooltip__size tooltip__bottom ${
+                        (
+                            width > 120
+                            && height > 50
+                        ) ? 'rectangle-tooltip_center' : ''
+                    }" data-action="move">${width}x${height}</div>
                     <div class="js-rectangle-tooltip-pos rectangle-tooltip__pos tooltip__bottom hide" data-action="move">${top}x${left}</div>
                 </div>
                 <div class="ui-resizable-n" data-action="resize" data-resize="n"></div>

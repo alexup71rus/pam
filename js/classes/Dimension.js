@@ -1,4 +1,6 @@
 export default class Dimension {
+    measureContainer = false;
+
     constructor() {
         this.image = new Image();
         this.canvas = document.createElement('canvas');
@@ -145,6 +147,7 @@ export default class Dimension {
     draw(clientX, clientY) {
         let x = clientX;
         let y = clientY;
+        const noCursorDiv = document.querySelector('.dimension__nocursor');
 
         if (clientX + 100 > window.innerWidth) {
             this.nodes.tooltip.classList.add('translateX');
@@ -158,48 +161,181 @@ export default class Dimension {
             this.nodes.tooltip.classList.remove('translateY');
         }
 
-        this.top = this.top+1;
-        this.left = this.left+1;
-        this.nodes.point.classList.add('on');
-        this.nodes.point.style.top = clientY + 'px';
-        this.nodes.point.style.left = clientX + 'px';
-        this.nodes.tooltip.innerHTML = `${this.left + this.right} x ${this.top + this.bottom}`;
+        if (this.measureContainer) {
+            const elemOverCursor = document.elementFromPoint(x, y);
 
-        this.nodes.y.style.marginTop = '-' + this.top + 'px';
-        this.nodes.y.style.height = this.top + this.bottom + 'px';
+            if (elemOverCursor) {
+                if (noCursorDiv) {
+                    noCursorDiv.classList.add('dimension__nocursor_hide');
+                }
 
-        this.nodes.x.style.marginLeft = '-' + this.right + 'px';
-        this.nodes.x.style.width = this.left + this.right + 'px';
+                const top = elemOverCursor.getBoundingClientRect().top;
+                const left = elemOverCursor.getBoundingClientRect().left;
+                const width = elemOverCursor.getBoundingClientRect().width;
+                const height = elemOverCursor.getBoundingClientRect().height;
 
-        this.drawLines();
+                this.top = this.top+1;
+                this.left = this.left+1;
+                this.nodes.point.classList.add('on');
+                this.nodes.point.style.top = (top + (height/2)) + 'px';
+                this.nodes.point.style.left = (left + (width/2)) + 'px';
+                this.nodes.tooltip.innerHTML = `${width} x ${height}`;
+
+                this.nodes.y.style.marginTop = -(height/2) + 'px';
+                this.nodes.y.style.height = height + 'px';
+
+                this.nodes.x.style.marginLeft = -(width/2) + 'px';
+                this.nodes.x.style.width = width + 'px';
+            } else {
+                if (noCursorDiv) {
+                    noCursorDiv.classList.remove('dimension__nocursor_hide');
+                }
+
+                this.top = this.top+1;
+                this.left = this.left+1;
+                this.nodes.point.classList.add('on');
+                this.nodes.point.style.top = clientY + 'px';
+                this.nodes.point.style.left = clientX + 'px';
+                this.nodes.tooltip.innerHTML = `${this.left + this.right} x ${this.top + this.bottom}`;
+
+                this.nodes.y.style.marginTop = '-' + this.top + 'px';
+                this.nodes.y.style.height = this.top + this.bottom + 'px';
+
+                this.nodes.x.style.marginLeft = '-' + this.right + 'px';
+                this.nodes.x.style.width = this.left + this.right + 'px';
+            }
+        } else {
+            this.top = this.top+1;
+            this.left = this.left+1;
+            this.nodes.point.classList.add('on');
+            this.nodes.point.style.top = clientY + 'px';
+            this.nodes.point.style.left = clientX + 'px';
+            this.nodes.tooltip.innerHTML = `${this.left + this.right} x ${this.top + this.bottom}`;
+
+            this.nodes.y.style.marginTop = '-' + this.top + 'px';
+            this.nodes.y.style.height = this.top + this.bottom + 'px';
+
+            this.nodes.x.style.marginLeft = '-' + this.right + 'px';
+            this.nodes.x.style.width = this.left + this.right + 'px';
+        }
     }
 
-    drawLines() { //
-    }
-
-    fixPositionRails() { //
+    fixPositionRails(isAllSet = false) { //
         const rectX = this.nodes.x.getBoundingClientRect();
         const rectY = this.nodes.y.getBoundingClientRect();
-        const rail = document.createElement('div');
-        rail.classList.add('js-rail');
 
-        console.log(this.nodes.y, this.nodes.y.style.width, this.nodes.y.style.height);
+        if (isAllSet) {
+            const railX = document.createElement('div');
+            railX.classList.add('js-rail');
+            railX.classList.add('rail-x');
+            railX.style.width = this.nodes.x.style.width;
+            railX.style.top = window.scrollY + rectX.top + 'px';
+            railX.style.left = window.scrollX + rectX.left + 'px';
+            railX.title = this.nodes.x.style.width;
+            document.body.appendChild(railX);
 
-        if (parseInt(this.nodes.x.style.width) < parseInt(this.nodes.y.style.height)) {
-            rail.classList.add('rail-x');
-            rail.style.width = this.nodes.x.style.width;
-            rail.style.top = window.scrollY + rectX.top + 'px';
-            rail.style.left = window.scrollX + rectX.left + 'px';
-            rail.title = this.nodes.x.style.width;
+            const railY = document.createElement('div');
+            railY.classList.add('js-rail');
+            railY.classList.add('rail-y');
+            railY.style.height = this.nodes.y.style.height;
+            railY.style.top = window.scrollY + rectY.top + 'px';
+            railY.style.left = window.scrollX + rectY.left + 'px';
+            railY.title = this.nodes.y.style.height;
+            document.body.appendChild(railY);
+
         } else {
-            rail.classList.add('rail-y');
-            rail.style.height = this.nodes.y.style.height;
-            rail.style.top = window.scrollY + rectY.top + 'px';
-            rail.style.left = window.scrollX + rectY.left + 'px';
-            rail.title = this.nodes.y.style.height;
+            const rail = document.createElement('div');
+            rail.classList.add('js-rail');
+
+            if (parseInt(this.nodes.x.style.width) < parseInt(this.nodes.y.style.height)) {
+                rail.classList.add('rail-x');
+                rail.style.width = this.nodes.x.style.width;
+                rail.style.top = window.scrollY + rectX.top + 'px';
+                rail.style.left = window.scrollX + rectX.left + 'px';
+                rail.title = this.nodes.x.style.width;
+            } else {
+                rail.classList.add('rail-y');
+                rail.style.height = this.nodes.y.style.height;
+                rail.style.top = window.scrollY + rectY.top + 'px';
+                rail.style.left = window.scrollX + rectY.left + 'px';
+                rail.title = this.nodes.y.style.height;
+            }
+
+            document.body.appendChild(rail);
+        }
+    }
+
+    clearRails() {
+        const rails = document.querySelectorAll('.js-rail');
+
+        if (rails) {
+            rails.forEach(rail => {
+                rail.remove();
+            });
+        }
+    }
+
+    showWindowWH() {
+        const divContainer = document.createElement('div');
+
+        divContainer.classList.add('js-window-wh');
+        divContainer.classList.add('window-wh');
+        divContainer.classList.add('window-wh_show');
+        divContainer.innerHTML = window.innerWidth + 'x' + window.innerHeight;
+
+        document.body.appendChild(divContainer);
+
+        setTimeout(() => {
+            if (divContainer) {
+                divContainer.classList.remove('window-wh_show');
+            }
+        }, 800);
+        setTimeout(() => {
+            if (divContainer) {
+                divContainer.remove();
+            }
+        }, 1000);
+    }
+
+    showDocumentWH() {
+        const divContainer = document.createElement('div');
+        const body = document.body;
+        const html = document.documentElement;
+        const width = Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth,
+            html.offsetWidth);
+        const height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight,
+            html.offsetHeight);
+        const windowWHs = document.querySelectorAll('.js-window-wh');
+
+        if (windowWHs) {
+            windowWHs.forEach(div => {
+                div.remove();
+            })
         }
 
-        document.body.appendChild(rail);
+        divContainer.classList.add('js-window-wh');
+        divContainer.classList.add('window-wh');
+        divContainer.classList.add('window-wh_show');
+        divContainer.innerHTML = width + 'x' + height;
+
+        document.body.appendChild(divContainer);
+
+        setTimeout(() => {
+            divContainer.classList.remove('window-wh_show');
+        }, 1000);
+        setTimeout(() => {
+            divContainer.remove();
+        }, 1200);
+    }
+
+    hideWHs() {
+        const windowWHs = document.querySelectorAll('.js-window-wh');
+
+        if (windowWHs) {
+            windowWHs.forEach(div => {
+                div.remove();
+            })
+        }
     }
 
     parseScreenshot(png) {

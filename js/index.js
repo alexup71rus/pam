@@ -16,6 +16,7 @@ const quickKeys = {
             return false;
         } else if (active === '') {
             active = key;
+            dimension.hideWHs();
             return true;
         }
     },
@@ -24,11 +25,37 @@ const quickKeys = {
         return false;
     },
     'AltLeft + KeyC': function () {
-        // rectangleRuler.create();
+        dimension.clearRails();
+        return false;
+    },
+    'AltLeft + KeyD': function () {
+        dimension.fixPositionRails(true);
         return false;
     },
     'AltLeft + KeyS': function () {
         dimension.fixPositionRails();
+        return false;
+    },
+    'AltLeft + ShiftLeft': function () {
+        if (active === 'dimensions') {
+            dimension.measureContainer = true;
+        } else if (active === '') {
+            dimension.showDocumentWH();
+        }
+
+        return false;
+    },
+    'AltLeft + ShiftLeft + KeyX': function () {
+        if (active === '') {
+            rectangleRuler.create();
+        }
+
+        return false;
+    },
+    'AltLeft': function () {
+        if (active === '') {
+            dimension.showWindowWH();
+        }
         return false;
     },
 };
@@ -50,7 +77,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 window.addEventListener('keydown', (ev) => {
     setKeys.push(ev.code);
 
-    if (setKeys.length === 2 && typeof quickKeys[ setKeys.join(' + ') ] === 'function') {
+    if (setKeys.length >= 1 && typeof quickKeys[ setKeys.join(' + ') ] === 'function') {
         if (quickKeys[ setKeys.join(' + ') ]()) {
             chrome.runtime.sendMessage({optionActivate: active});
         }
@@ -59,6 +86,7 @@ window.addEventListener('keydown', (ev) => {
 
 window.addEventListener('keyup', (ev) => {
     setKeys = [];
+    dimension.measureContainer = false;
 });
 
 window.addEventListener('mousemove', (ev) => {
@@ -88,8 +116,6 @@ function handleScreenChange(timeoutDeb, timeoutScreen) {
 
         scrollScreenDebounce = setTimeout(() => {
             quickKeys['AltLeft + KeyZ']();
-
-            console.log('scrollScreenDebounce', active)
 
             setTimeout(() => {
                 if (quickKeys['AltLeft + KeyZ']()) {

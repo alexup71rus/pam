@@ -32,6 +32,10 @@ html {
     z-index: 99999999;
   }
 
+  .dimension__nocursor_hide {
+    pointer-events: none;
+  }
+
   .js-dimension__tooltip {
     position: absolute;
     left: 5px;
@@ -329,4 +333,31 @@ html {
     width: 1px !important;
     height: 100% !important;
   }
+}
+
+// window-wh
+
+.window-wh {
+  position: fixed;
+  top: 2px;
+  right: 2px;
+  width: auto;
+  color: white;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 20px;
+  font-family: sans-serif;
+  padding: 0px 5px;
+  background: rgba(0, 30, 51, 0.7);
+  border-radius: 3px;
+  box-sizing: border-box;
+  z-index: 999999;
+
+  opacity: 0 !important;
+  transition: all 0.2s ease 0s !important;
+}
+
+.window-wh_show {
+  opacity: 1 !important;
 }

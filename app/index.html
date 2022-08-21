@@ -7,15 +7,24 @@
     <link rel="stylesheet" href="./css/popup.min.css">
 </head>
 <body>
-    <ul>
-        <li title="Измерение видимых расстояний"><span class="name">Динамическое изменерие</span><span class="hotkey">(option + z)</span></li>
-        <li title="Жёсткое измерение видимых расстояний"><span class="name">Жёсткое изменерие</span><span class="hotkey">(option + x)</span></li>
-        <li title="Линейка в одну линию"><span class="name">Линейка</span><span class="hotkey">(option + c)</span></li>
-        <li title="Прямоугольная линейка"><span class="name">Прямоугольная линейка</span><span class="hotkey">(option + v)</span></li>
-        <li title="Направляющая линия"><span class="name">Направляющая линия</span><span class="hotkey">(option + b)</span></li>
-        <li title="Направляющая прямоугольник"><span class="name">Направляющая прямоугольник</span><span class="hotkey">(option + n)</span></li>
-        <li title="Убрать все линейки со страницы"><span class="name">Убрать все линейки</span></li>
-        <li title="Убрать все направляющие со страницы"><span class="name">Убрать все направляющие</span></li>
-    </ul>
+    <div>
+        <ul>
+            <li title="Получить размер окна"><span class="name">Получить размер окна</span><span class="hotkey">(alt)</span></li>
+            <li title="Получить размер страницы"><span class="name">Получить размер страницы</span><span class="hotkey">(alt + shift)</span></li>
+            <li title="Перекрестие"><span class="name">Перекрестие</span><span class="hotkey">(alt + z)</span></li>
+            <li title="Перекрестие накладывается на выбранный элемент"><span class="name">Перекрестие над элементом</span><span class="hotkey">(перекрестие + alt + shift)</span></li>
+            <li title="Прямоугольник"><span class="name">Прямоугольник</span><span class="hotkey">(option + x)</span></li>
+            <li title="Автоматический прямоугольник накладывается на выбранный элемент"><span class="name">Автоматический прямоугольник</span><span class="hotkey">(option + shift + x)</span></li>
+            <li title="Автоматическая направляющая появляется в месте наименьшего расстояния между элементами"><span class="name">Автоматическая направляющая</span><span class="hotkey">(option + s)</span></li>
+            <li title="Перекрестие направляющих"><span class="name">Перекрестие направляющих</span><span class="hotkey">(option + d)</span></li>
+            <li title="Убрать все направляющие"><span class="name">Убрать все направляющие</span><span class="hotkey">(option + c)</span></li>
+        </ul>
+        <div class="hr"></div>
+        <div>
+            <ul>
+                <li title="Измерение видимых расстояний"><input class="js-color-hold color-hold" type="range" min="1" max="50" step="1" value="8"><span class="hotkey">точность перекрестия</span></li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>

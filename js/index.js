@@ -61,7 +61,7 @@ const quickKeys = {
 };
 const actions = {
     'takeScreenshot': function (request, sender, sendResponse) {
-        dimension.parseScreenshot(request.screenPng);
+        dimension.parseScreenshot(request.screenPng, request.hold);
     },
 }
 

@@ -13,9 +13,19 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
             // chrome.tabs.sendMessage(tabs[0].id, {"message": "click"});
 
             return true;
+        } else if (message.hold) {
+            console.log(+message.hold);
+            chrome.storage.local.set({'pam-holder': +message.hold});
         } else if (active === 'dimensions') {
             chrome.tabs.captureVisibleTab({ format: "png" }, data => {
-                chrome.tabs.sendMessage(tabs[0].id, {action: 'takeScreenshot', screenPng: data});
+                chrome.storage.local.get(['pam-holder'], hold => {
+                    hold = hold && hold['pam-holder'] ? hold['pam-holder'] : 8;
+
+                    chrome.tabs.sendMessage(tabs[0].id, {action: 'takeScreenshot', screenPng: data, hold: hold});
+
+                    return true;
+                });
+
                 return true;
             });
 

@@ -342,7 +342,8 @@ export default class Dimension {
         }
     }
 
-    parseScreenshot(png) {
+    parseScreenshot(png, hold) {
+        this.colorHold = hold;
         this.image.onload = this.loadImage(this.screenshotProcessed.bind(this));
         this.image.src = png;
     }

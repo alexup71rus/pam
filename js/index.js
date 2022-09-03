@@ -83,7 +83,6 @@ window.addEventListener('keydown', (ev) => {
         case 'KeyC':
         case 'KeyS':
         case 'KeyD':
-            ev.preventDefault();
             setKeys.push(ev.code);
 
             const action = setKeys.join(' + ');

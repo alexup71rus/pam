@@ -169,10 +169,10 @@ export default class Dimension {
                     noCursorDiv.classList.add('dimension__nocursor_hide');
                 }
 
-                const top = Math.ceil(elemOverCursor.getBoundingClientRect().top);
-                const left = Math.ceil(elemOverCursor.getBoundingClientRect().left);
-                const width = Math.ceil(elemOverCursor.getBoundingClientRect().width);
-                const height = Math.ceil(elemOverCursor.getBoundingClientRect().height);
+                const top = Math.round(elemOverCursor.getBoundingClientRect().top);
+                const left = Math.round(elemOverCursor.getBoundingClientRect().left);
+                const width = Math.round(elemOverCursor.getBoundingClientRect().width);
+                const height = Math.round(elemOverCursor.getBoundingClientRect().height);
 
                 this.top = this.top+1;
                 this.left = this.left+1;
@@ -233,8 +233,8 @@ export default class Dimension {
             railX.classList.add('js-rail');
             railX.classList.add('rail-x');
             railX.style.width = this.nodes.x.style.width;
-            railX.style.top = window.scrollY + rectX.top + 'px';
-            railX.style.left = window.scrollX + rectX.left + 'px';
+            railX.style.top = window.scrollY + rectX.top-1 + 'px';
+            railX.style.left = window.scrollX + rectX.left-1 + 'px';
             railX.title = this.nodes.x.style.width;
             document.body.appendChild(railX);
 

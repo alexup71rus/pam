@@ -7,7 +7,7 @@ const rectangleRuler = new RectangleRuler();
 let setKeys = [];
 let active = '';
 const quickKeys = {
-    'AltLeft + KeyZ': function () {
+    'ControlLeft + KeyZ': function () {
         const key = 'dimensions';
 
         if (active === key) {
@@ -20,23 +20,23 @@ const quickKeys = {
             return true;
         }
     },
-    'AltLeft + KeyX': function () {
+    'ControlLeft + KeyX': function () {
         rectangleRuler.create();
         return false;
     },
-    'AltLeft + KeyC': function () {
+    'ControlLeft + KeyC': function () {
         dimension.clearRails();
         return false;
     },
-    'AltLeft + KeyD': function () {
+    'ControlLeft + KeyD': function () {
         dimension.fixPositionRails(true);
         return false;
     },
-    'AltLeft + KeyS': function () {
+    'ControlLeft + KeyS': function () {
         dimension.fixPositionRails();
         return false;
     },
-    'AltLeft + ShiftLeft': function () {
+    'ControlLeft + ShiftLeft': function () {
         if (active === 'dimensions') {
             dimension.measureContainer = true;
         } else if (active === '') {
@@ -45,14 +45,14 @@ const quickKeys = {
 
         return false;
     },
-    'AltLeft + ShiftLeft + KeyX': function () {
+    'ControlLeft + ShiftLeft + KeyX': function () {
         if (active === '') {
             rectangleRuler.create(true);
         }
 
         return false;
     },
-    'AltLeft': function () {
+    'ControlLeft': function () {
         if (active === '') {
             dimension.showWindowWH();
         }
@@ -75,18 +75,38 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 window.addEventListener('keydown', (ev) => {
-    setKeys.push(ev.code);
+    switch (ev.code) {
+        case 'ControlLeft':
+        case 'ShiftLeft':
+        case 'KeyZ':
+        case 'KeyX':
+        case 'KeyC':
+        case 'KeyS':
+        case 'KeyD':
+            ev.preventDefault();
+            setKeys.push(ev.code);
 
-    if (setKeys.length >= 1 && typeof quickKeys[ setKeys.join(' + ') ] === 'function') {
-        if (quickKeys[ setKeys.join(' + ') ]()) {
-            chrome.runtime.sendMessage({optionActivate: active});
-        }
+            const action = setKeys.join(' + ');
+
+            if (setKeys.length >= 1 && typeof quickKeys[ action ] === 'function') {
+                if (quickKeys[ action ]()) {
+                    chrome.runtime.sendMessage({optionActivate: active});
+                }
+            }
+
+            return;
     }
 });
 
 window.addEventListener('keyup', (ev) => {
-    setKeys = [];
-    dimension.measureContainer = false;
+    console.log('keyup', ev.code, setKeys);
+
+    if (ev.code === 'ControlLeft') {
+        setKeys = [];
+        dimension.measureContainer = false;
+    } else {
+        setKeys = setKeys.filter(keyCode => (ev.code !== keyCode));
+    }
 });
 
 window.addEventListener('mousemove', (ev) => {
@@ -106,25 +126,27 @@ let scrollScreenProcess = false;
     }, false);
 });
 
+let screenFalced = false;
 function handleScreenChange(timeoutDeb, timeoutScreen) {
     if (active === 'dimensions' && scrollScreenProcess === false) {
         scrollScreenProcess = true;
+
 
         if (scrollScreenDebounce) {
             clearTimeout(scrollScreenDebounce);
         }
 
         scrollScreenDebounce = setTimeout(() => {
-            quickKeys['AltLeft + KeyZ']();
+            if (quickKeys['AltLeft + KeyZ']() === false) {
+                setTimeout(() => {
+                    if (quickKeys['AltLeft + KeyZ']()) {
+                        console.log('scrollScreenDebounce - 2', active)
+                        chrome.runtime.sendMessage({optionActivate: active});
 
-            setTimeout(() => {
-                if (quickKeys['AltLeft + KeyZ']()) {
-                    console.log('scrollScreenDebounce - 2', active)
-                    chrome.runtime.sendMessage({optionActivate: active});
-
-                    scrollScreenProcess = false;
-                }
-            }, timeoutScreen)
+                        scrollScreenProcess = false;
+                    }
+                }, timeoutScreen);
+            }
         }, timeoutDeb);
     }
 }

@@ -229,16 +229,13 @@ html {
 
   .rectangle-tooltip__pos.hide {
     opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   .rectangle-tooltip_center {
     bottom: 50%;
     transform: translate(-50%, 50%);
     border-radius: 3px;
-  }
-
-  .rectangle-tooltip_center + .rectangle-tooltip__pos.hide {
-    opacity: 1 !important;
   }
 
   .tooltip__left {

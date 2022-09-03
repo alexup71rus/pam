@@ -33,10 +33,10 @@ export default class RectangleRuler {
             left = 100 + (rulers.length * 10);
         }
 
-        top = Math.ceil(top);
-        left = Math.ceil(left);
-        width = Math.ceil(width);
-        height = Math.ceil(height);
+        top = Math.round(top);
+        left = Math.round(left);
+        width = Math.round(width);
+        height = Math.round(height);
 
         const container = document.createElement('div');
         container.classList.add('js-rectangle-ruler');
@@ -228,8 +228,20 @@ export default class RectangleRuler {
     }
 
     hidePos() {
-        this.tooltipPosNode.classList.add('hide');
-        this.tooltipSizeNode.classList.remove('hide');
+        const tooltipPosArray = document.querySelectorAll('.js-rectangle-tooltip-pos');
+        const tooltipSizeArray = document.querySelectorAll('.js-rectangle-tooltip-size');
+
+        if (tooltipPosArray) {
+            tooltipPosArray.forEach(tooltip => {
+                tooltip.classList.add('hide');
+            });
+        }
+
+        if (tooltipSizeArray) {
+            tooltipSizeArray.forEach(tooltip => {
+                tooltip.classList.remove('hide');
+            });
+        }
     }
 
     mouseMove(ev) {

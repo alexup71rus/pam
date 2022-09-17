@@ -16,8 +16,6 @@ const actions = {
 chrome.storage.local.get(['pam-holder', 'hotkeys'], (storage) => {
     quickKeys = {};
 
-    console.log(storage.hotkeys);
-
     storage.hotkeys.map((hk, i) => {
         hk = hk.filter(key => key !== 'Перекрестие');
         hk = hk.join(' + ');

@@ -29,19 +29,15 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
         const active = message.optionActivate;
 
         if (message.popupOpen) {
-            chrome.storage.local.get(['hotkeys'], keys => {
-                console.log(keys.hotkeys);
-                return false;
-            });
-
             return true;
         } else if (message.resetSettings) {
             chrome.storage.local.set({'hotkeys': _quickKeys, 'pam-holder': 8});
-        } else if (message.hotkey) {
-            quickKeys[+message.index] = message.hotkey;
-            chrome.storage.local.set({'hotkeys': quickKeys});
-        } else if (message.hold) {
-            chrome.storage.local.set({'pam-holder': +message.hold});
+        // } else if (message.hotkey) {
+            // quickKeys[+message.index] = message.hotkey;
+            // console.log(quickKeys, message);
+            // chrome.storage.local.set({'hotkeys': quickKeys});
+        // } else if (message.hold) {
+        //     chrome.storage.local.set({'pam-holder': +message.hold});
         } else if (active === 'dimensions') {
             chrome.tabs.captureVisibleTab({ format: "png" }, data => {
                 chrome.storage.local.get(['pam-holder'], hold => {

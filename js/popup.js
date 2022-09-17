@@ -1,5 +1,8 @@
 chrome.runtime.sendMessage({popupOpen: true});
 
+let hotkeys = [];
+let holder = 8;
+
 window.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.querySelector('.js-reset');
     const itemsLi = document.querySelectorAll('.js-item-li');
@@ -7,55 +10,54 @@ window.addEventListener('DOMContentLoaded', () => {
     const hotkeyInputs = document.querySelectorAll('.js-hotkey-input');
     const holderInput = document.querySelector('.js-color-hold');
 
-    resetSettingsBinder(resetButton, hotkeyInputs, hotkeySpans, holderInput);
     colorHolder(holderInput);
-    renderHotkeys(hotkeyInputs, hotkeySpans);
-    hotkeySetter(hotkeyInputs, hotkeySpans);
+    resetSettingsBinder(resetButton, hotkeyInputs, hotkeySpans, holderInput);
+    hotkeySetter(hotkeyInputs, hotkeySpans, holderInput);
+    render(hotkeyInputs, hotkeySpans, holderInput);
 });
 
+function render(hotkeyInputs, hotkeySpans, holderInput) {
+    chrome.storage.local.get(['hotkeys', 'pam-holder'], hks => {
+        hotkeys = hks['hotkeys'];
+        holder = hks['pam-holder'];
+
+        renderHotkeys(hotkeyInputs, hotkeySpans);
+        renderColorHolder(holderInput);
+    });
+}
+
 function resetSettingsBinder(resetButton, hotkeyInputs, hotkeySpans, holderInput) {
-    console.log(resetButton)
     resetButton.addEventListener('click', () => {
         chrome.runtime.sendMessage({resetSettings: true});
 
-        setTimeout(() => {
-            renderHotkeys(hotkeyInputs, hotkeySpans);
-            renderColorHolder(holderInput);
-        }, 50);
+        setTimeout(() => render(hotkeyInputs, hotkeySpans, holderInput), 50);
     });
 }
 
 function renderColorHolder(holderInput) {
-    chrome.storage.local.get(['pam-holder'], hold => {
-        hold = hold && hold['pam-holder'] ? hold['pam-holder'] : 8;
-
-        holderInput.value = hold;
-    });
+    console.log(holder);
+    holderInput.value = holder ? holder : 8;
 }
 
 function colorHolder(holderInput) {
-    renderColorHolder(holderInput);
-
     if (holderInput) {
         holderInput.addEventListener('change', ev => {
-            chrome.runtime.sendMessage({hold: holderInput.value});
+            chrome.storage.local.set({'pam-holder': +holderInput.value});
         });
     }
 }
 
 function renderHotkeys(hotkeyInputs, hotkeySpans) {
-    chrome.storage.local.get(['hotkeys'], hotkeys => {
-        hotkeyInputs.forEach((hotkeyInput, i) => {
-            hotkeyInput.value = hotkeys.hotkeys[i].join(' + ');
-        });
+    hotkeyInputs.forEach((hotkeyInput, i) => {
+        hotkeyInput.value = hotkeys[i].join(' + ');
+    });
 
-        hotkeySpans.forEach((hotkeySpan, i) => {
-            hotkeySpan.innerHTML = '(' + hotkeys.hotkeys[i].join(' + ') + ')';
-        });
+    hotkeySpans.forEach((hotkeySpan, i) => {
+        hotkeySpan.innerHTML = '(' + hotkeys[i].join(' + ') + ')';
     });
 }
 
-function hotkeySetter(hotkeyInputs, hotkeySpans) {
+function hotkeySetter(hotkeyInputs, hotkeySpans, holderInput) {
     hotkeyInputs.forEach((hotkeyInput, i) => {
         let keys = [];
         let keysActive = [];
@@ -71,21 +73,21 @@ function hotkeySetter(hotkeyInputs, hotkeySpans) {
         hotkeyInput.addEventListener('keydown', ev => {
             if (ev.code === 'Enter') {
                 if (keys.length) {
-                    console.log(keys)
-                    chrome.runtime.sendMessage({hotkey: keys, index: i});
+                    hotkeys[i] = keys;
+                    chrome.storage.local.set({'hotkeys': hotkeys});
                 }
 
                 hotkeyInput.classList.remove('hotkey-input_show');
                 hotkeySpans[i].classList.remove('hotkey_hide');
 
-                setTimeout(() => {
-                    renderHotkeys(hotkeyInputs, hotkeySpans);
-                }, 50);
+                setTimeout(() => render(hotkeyInputs, hotkeySpans, holderInput), 50);
 
                 return;
             }
 
             if (keysActive.length === 0) {
+                console.log(keysActive, i);
+
                 if (i === 3) {
                     keys = ['Перекрестие'];
                 } else {

@@ -19,6 +19,7 @@ chrome.storage.local.get(['pam-holder', 'hotkeys'], (storage) => {
     console.log(storage.hotkeys);
 
     storage.hotkeys.map((hk, i) => {
+        hk = hk.filter(key => key !== 'Перекрестие');
         hk = hk.join(' + ');
 
         if (i === 0) {
@@ -28,9 +29,10 @@ chrome.storage.local.get(['pam-holder', 'hotkeys'], (storage) => {
                 }
                 return false;
             };
-        } else if (i === 1) {
+        } else if (i === 1 || i === 3) {
             quickKeys[hk] = function () {
                 if (active === 'dimensions') {
+                    dimension.measureContainer = true;
                 } else if (active === '') {
                     dimension.showDocumentWH();
                 }
@@ -49,14 +51,6 @@ chrome.storage.local.get(['pam-holder', 'hotkeys'], (storage) => {
                     active = key;
                     dimension.hideWHs();
                     return true;
-                }
-
-                return false;
-            }
-        } else if (i === 3) {
-            quickKeys[hk] = function () {
-                if (active === 'dimensions') {
-                    dimension.measureContainer = true;
                 }
 
                 return false;

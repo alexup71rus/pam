@@ -30,14 +30,7 @@ chrome.storage.local.get(['pam-holder', 'hotkeys'], (storage) => {
         } else if (i === 1 || i === 3) {
             quickKeys[hk] = function () {
                 if (active === 'dimensions') {
-                    dimension.measureContainer = true;
-
-                    window.addEventListener('keyup', (ev) => {
-                        if (ev.code === hk) {
-                            setKeys = [];
-                            dimension.measureContainer = false;
-                        }
-                    });
+                    dimension.measureContainer = !!dimension.measureContainer;
                 } else if (active === '') {
                     dimension.showDocumentWH();
                 }
@@ -118,6 +111,7 @@ window.addEventListener('keydown', (ev) => {
 window.addEventListener('keyup', (ev) => {
     console.log('keyup', ev.code, setKeys);
 
+    dimension.measureContainer = false;
     setKeys = setKeys.filter(keyCode => (ev.code !== keyCode));
 });
 

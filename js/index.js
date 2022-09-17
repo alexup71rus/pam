@@ -6,64 +6,94 @@ const rectangleRuler = new RectangleRuler();
 
 let setKeys = [];
 let active = '';
-const quickKeys = {
-    'ControlLeft + KeyZ': function () {
-        const key = 'dimensions';
-
-        if (active === key) {
-            active = '';
-            dimension.stop();
-            return false;
-        } else if (active === '') {
-            active = key;
-            dimension.hideWHs();
-            return true;
-        }
-    },
-    'ControlLeft + KeyX': function () {
-        rectangleRuler.create();
-        return false;
-    },
-    'ControlLeft + KeyC': function () {
-        dimension.clearRails();
-        return false;
-    },
-    'ControlLeft + KeyD': function () {
-        dimension.fixPositionRails(true);
-        return false;
-    },
-    'ControlLeft + KeyS': function () {
-        dimension.fixPositionRails();
-        return false;
-    },
-    'ControlLeft + ShiftLeft': function () {
-        if (active === 'dimensions') {
-            dimension.measureContainer = true;
-        } else if (active === '') {
-            dimension.showDocumentWH();
-        }
-
-        return false;
-    },
-    'ControlLeft + ShiftLeft + KeyX': function () {
-        if (active === '') {
-            rectangleRuler.create(true);
-        }
-
-        return false;
-    },
-    'ControlLeft': function () {
-        if (active === '') {
-            dimension.showWindowWH();
-        }
-        return false;
-    },
-};
+let quickKeys = {};
 const actions = {
     'takeScreenshot': function (request, sender, sendResponse) {
         dimension.parseScreenshot(request.screenPng, request.hold);
     },
 }
+
+chrome.storage.local.get(['pam-holder', 'hotkeys'], (storage) => {
+    quickKeys = {};
+
+    console.log(storage.hotkeys);
+
+    storage.hotkeys.map((hk, i) => {
+        hk = hk.join(' + ');
+
+        if (i === 0) {
+            quickKeys[hk] = function () {
+                if (active === '') {
+                    dimension.showWindowWH();
+                }
+                return false;
+            };
+        } else if (i === 1) {
+            quickKeys[hk] = function () {
+                if (active === 'dimensions') {
+                } else if (active === '') {
+                    dimension.showDocumentWH();
+                }
+
+                return false;
+            }
+        } else if (i === 2) {
+            quickKeys[hk] = function () {
+                const key = 'dimensions';
+
+                if (active === key) {
+                    active = '';
+                    dimension.stop();
+                    return false;
+                } else if (active === '') {
+                    active = key;
+                    dimension.hideWHs();
+                    return true;
+                }
+
+                return false;
+            }
+        } else if (i === 3) {
+            quickKeys[hk] = function () {
+                if (active === 'dimensions') {
+                    dimension.measureContainer = true;
+                }
+
+                return false;
+            }
+        } else if (i === 4) {
+            quickKeys[hk] = function () {
+                rectangleRuler.create();
+                return false;
+            }
+        } else if (i === 5) {
+            quickKeys[hk] = function () {
+                if (active === '') {
+                    rectangleRuler.create(true);
+                }
+
+                return false;
+            }
+        } else if (i === 6) {
+            quickKeys[hk] = function () {
+                dimension.fixPositionRails();
+                return false;
+            }
+        } else if (i === 7) {
+            quickKeys[hk] = function () {
+                dimension.fixPositionRails(true);
+                return false;
+            }
+        } else if (i === 8) {
+            quickKeys[hk] = function () {
+                dimension.clearRails();
+                return false;
+            }
+        }
+    });
+
+    console.log(quickKeys)
+});
 
 // receiveWorkerMessage
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -75,25 +105,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 window.addEventListener('keydown', (ev) => {
-    switch (ev.code) {
-        case 'ControlLeft':
-        case 'ShiftLeft':
-        case 'KeyZ':
-        case 'KeyX':
-        case 'KeyC':
-        case 'KeyS':
-        case 'KeyD':
-            setKeys.push(ev.code);
+    setKeys.push(ev.code);
 
-            const action = setKeys.join(' + ');
+    const action = setKeys.join(' + ');
 
-            if (setKeys.length >= 1 && typeof quickKeys[ action ] === 'function') {
-                if (quickKeys[ action ]()) {
-                    chrome.runtime.sendMessage({optionActivate: active});
-                }
-            }
-
-            return;
+    if (setKeys.length >= 1 && typeof quickKeys[ action ] === 'function') {
+        if (quickKeys[ action ]()) {
+            chrome.runtime.sendMessage({optionActivate: active});
+        }
     }
 });
 

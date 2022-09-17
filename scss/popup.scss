@@ -1,7 +1,24 @@
 body {
   padding: 5px;
-  width: 450px;
+  width: 500px;
   background-color: #202124;
+}
+
+.reset-settings {
+  width: 200px;
+  margin-left: calc(100% - 200px);
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 0;
+  border-radius: 5px;
+  background-color: #853838;
+  color: #dfd9d9;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: .8;
+  }
 }
 
 ul {
@@ -15,25 +32,11 @@ li {
   display: block;
   margin: 0;
   padding: 2px 0 2px 10px;
-  //border-left: 1px solid #999;
+  cursor: default;
 
   &:not(:last-child) {
     margin-bottom: 10px;
   }
-}
-
-.name {
-  display: block;
-  margin: 0;
-  width: calc(100% - 80px);
-  font-size: 16px;
-  color: #eee;
-  cursor: default;
-  //cursor: pointer;
-
-  //&:hover {
-  //  color: #707aff;
-  //}
 }
 
 li .hotkey {
@@ -44,6 +47,45 @@ li .hotkey {
   font-size: 14px;
   font-style: italic;
   color: #ccc;
+  cursor: pointer;
+}
+
+li .hotkey.hotkey_hide {
+  opacity: 0;
+}
+
+li .hotkey-input {
+  position: absolute;
+  top: -2px;
+  right: 0;
+  width: 245px;
+  height: 20px;
+  padding: 3px;
+  border: 0;
+  outline: none;
+  background-color: #fff;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 1;
+
+  transition: .1s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+li .hotkey-input.hotkey-input_show {
+  transition: 0s;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.name {
+  display: block;
+  margin: 0;
+  width: calc(100% - 80px);
+  font-size: 16px;
+  color: #eee;
   cursor: default;
 }
 

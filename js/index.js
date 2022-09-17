@@ -30,7 +30,7 @@ chrome.storage.local.get(['pam-holder', 'hotkeys'], (storage) => {
         } else if (i === 1 || i === 3) {
             quickKeys[hk] = function () {
                 if (active === 'dimensions') {
-                    dimension.measureContainer = !!dimension.measureContainer;
+                    dimension.measureContainer = true;
                 } else if (active === '') {
                     dimension.showDocumentWH();
                 }

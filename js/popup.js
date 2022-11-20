@@ -71,6 +71,10 @@ function hotkeySetter(hotkeyInputs, hotkeySpans, holderInput) {
         });
 
         hotkeyInput.addEventListener('keydown', ev => {
+            if (keysActive && keysActive.includes(ev.code)) {
+                return false;
+            }
+
             if (ev.code === 'Enter') {
                 if (keys.length) {
                     hotkeys[i] = keys;
@@ -86,19 +90,21 @@ function hotkeySetter(hotkeyInputs, hotkeySpans, holderInput) {
             }
 
             if (keysActive.length === 0) {
-                console.log(keysActive, i);
-
-                if (i === 3) {
+                if (i === 3 || i === 5 || i === 6 || i === 7) {
                     keys = ['Перекрестие'];
                 } else {
                     keys = [];
                 }
             }
 
+            console.log(i, keysActive)
+
             keys.push(ev.code);
             keysActive.push(ev.code);
 
             hotkeyInput.value = keys.map(key => key).join(' + ');
+
+            console.log(keys, hotkeyInput.value);
         });
 
         hotkeyInput.addEventListener('keyup', ev => {

@@ -357,6 +357,7 @@ export default class Dimension {
     }
 
     screenshotProcessed(data) { // получает свойства скриншота и вызывает методы вычисления
+        console.log(data.imgData)
         this.imgData = new Uint8ClampedArray(data.imgData);
         this.screenWidth = data.width;
         this.screenHeight = data.height;

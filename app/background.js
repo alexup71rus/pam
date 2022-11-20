@@ -8,9 +8,9 @@ const _quickKeys = [
     ['ControlLeft', 'KeyZ'],
     ['Перекрестие', 'ControlLeft', 'ShiftLeft'],
     ['ControlLeft', 'KeyX'],
-    ['ControlLeft', 'ShiftLeft', 'KeyX'],
-    ['ControlLeft', 'KeyS'],
-    ['ControlLeft', 'KeyD'],
+    ['Перекрестие', 'ControlLeft', 'ShiftLeft', 'KeyX'],
+    ['Перекрестие', 'ControlLeft', 'KeyS'],
+    ['Перекрестие', 'ControlLeft', 'KeyD'],
     ['ControlLeft', 'KeyC'],
 ];
 let quickKeys = _quickKeys;
@@ -29,7 +29,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
         const active = message.optionActivate;
 
         if (message.popupOpen) {
-            return true;
+            return false;
         } else if (message.resetSettings) {
             chrome.storage.local.set({'hotkeys': _quickKeys, 'pam-holder': 8});
         // } else if (message.hotkey) {

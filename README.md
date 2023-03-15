@@ -3,4 +3,4 @@
 
 ## Установка и запуск
 `npm i`\
-`npm run watch`\
+`npm run watch`

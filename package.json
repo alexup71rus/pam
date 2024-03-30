@@ -2,6 +2,7 @@
   "name": "pam-ext",
   "version": "1.0.0",
   "description": "Измерительный инструмент (powered by IT Test)",
+  "repository": "https://github.com/alexup71rus/pam.git",
   "scripts": {
     "build": "webpack --mode development",
     "dist": "webpack --mode production",

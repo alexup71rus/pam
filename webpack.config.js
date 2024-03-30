@@ -11,6 +11,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 // include the css extraction and minification plugins
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+// todo vue js
 module.exports = function(env, argv) {
   const mode = (argv.mode === 'production');
 
@@ -111,7 +112,6 @@ module.exports = function(env, argv) {
       minimizer: [
         // enable the js minification plugin
         new TerserPlugin({
-          sourceMap: mode ? false : true,
           terserOptions: {
             compress: {
               drop_console: mode ? true : false,

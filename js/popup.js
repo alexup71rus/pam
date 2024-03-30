@@ -12,7 +12,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     colorHolder(holderInput);
     resetSettingsBinder(resetButton, hotkeyInputs, hotkeySpans, holderInput);
-    hotkeySetter(hotkeyInputs, hotkeySpans, holderInput);
+    // todo: hotkey setter
+    //hotkeySetter(hotkeyInputs, hotkeySpans, holderInput);
     render(hotkeyInputs, hotkeySpans, holderInput);
 });
 
@@ -27,6 +28,7 @@ function render(hotkeyInputs, hotkeySpans, holderInput) {
 }
 
 function resetSettingsBinder(resetButton, hotkeyInputs, hotkeySpans, holderInput) {
+    // todo: reset settings
     resetButton.addEventListener('click', () => {
         chrome.runtime.sendMessage({resetSettings: true});
 
@@ -49,11 +51,15 @@ function colorHolder(holderInput) {
 
 function renderHotkeys(hotkeyInputs, hotkeySpans) {
     hotkeyInputs.forEach((hotkeyInput, i) => {
-        hotkeyInput.value = hotkeys[i].join(' + ');
+        if (hotkeys?.[i]) {
+            hotkeyInput.value = hotkeys[i].join(' + ');
+        }
     });
 
     hotkeySpans.forEach((hotkeySpan, i) => {
-        hotkeySpan.innerHTML = '(' + hotkeys[i].join(' + ') + ')';
+        if (hotkeys?.[i]) {
+            hotkeySpan.innerHTML = '(' + hotkeys[i]?.join(' + ') + ')';
+        }
     });
 }
 
@@ -76,7 +82,7 @@ function hotkeySetter(hotkeyInputs, hotkeySpans, holderInput) {
             }
 
             if (ev.code === 'Enter') {
-                if (keys.length) {
+                if (hotkeys?.[i] && keys.length) {
                     hotkeys[i] = keys;
                     chrome.storage.local.set({'hotkeys': hotkeys});
                 }
@@ -97,14 +103,10 @@ function hotkeySetter(hotkeyInputs, hotkeySpans, holderInput) {
                 }
             }
 
-            console.log(i, keysActive)
-
             keys.push(ev.code);
             keysActive.push(ev.code);
 
             hotkeyInput.value = keys.map(key => key).join(' + ');
-
-            console.log(keys, hotkeyInput.value);
         });
 
         hotkeyInput.addEventListener('keyup', ev => {

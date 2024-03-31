@@ -83,8 +83,6 @@ chrome.storage.local.get(['pam-holder', 'hotkeys'], (storage) => {
             }
         }
     });
-
-    console.log(quickKeys)
 });
 
 // receiveWorkerMessage
@@ -109,8 +107,6 @@ window.addEventListener('keydown', (ev) => {
 });
 
 window.addEventListener('keyup', (ev) => {
-    console.log('keyup', ev.code, setKeys);
-
     dimension.measureContainer = false;
     setKeys = setKeys.filter(keyCode => (ev.code !== keyCode));
 });

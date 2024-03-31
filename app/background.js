@@ -32,6 +32,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
             return false;
         } else if (message.resetSettings) {
             chrome.storage.local.set({'hotkeys': _quickKeys, 'pam-holder': 8});
+            // todo: fix hold keys
         // } else if (message.hotkey) {
             // quickKeys[+message.index] = message.hotkey;
             // console.log(quickKeys, message);

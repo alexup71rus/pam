@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "P&M",
-  "description": "Измерительный инструмент (powered by Intensa)",
+  "description": "Измерительный инструмент (powered by IT Test)",
   "version": "1.0.0",
   "icons": {"128": "icon_128.png"},
   "action": {
@@ -28,14 +28,8 @@
   "permissions": [
     "activeTab",
     "webNavigation",
-    "debugger",
-    "tabs",
-    "alarms",
-    "clipboardWrite",
-    "notifications",
     "background",
-    "storage",
-    "cookies"
+    "storage"
   ],
   "host_permissions": [
     "*://*/*",
